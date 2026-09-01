@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn instance to serve api
+After=network.target
+
+[Service]
+User=enma
+Group=enma
+WorkingDirectory=/home/enma/app/src
+Environment="PATH=/home/enma/app/src/venv/bin"
+ExecStart=/home/enma/app/src/venv/bin/gunicorn -w 2 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+
+[Install]
+WantedBy=multi-user.target
