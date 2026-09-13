@@ -20,11 +20,6 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-    from alembic import op
-import sqlalchemy as sa
-
-
-def upgrade():
     op.add_column(
         "posts",
         sa.Column("content", sa.String(), nullable=True)
