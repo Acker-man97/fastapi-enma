@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
-from sqlalchemy import create_engine
+from sqlalchemy import URL, create_engine
 import pytest
 from sqlalchemy.orm import sessionmaker
 from app.config import settings
@@ -9,8 +9,14 @@ from app import schema
 from jose import jwt
 
 
-# SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
-SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test'
+SQLALCHEMY_DATABASE_URL = URL.create(
+    "postgresql",
+    username=settings.database_username,
+    password=settings.database_password,
+    host=settings.database_hostname,
+    port=int(settings.database_port),
+    database=f"{settings.database_name}_test",
+)
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
