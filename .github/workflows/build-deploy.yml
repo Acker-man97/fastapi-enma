@@ -87,4 +87,22 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+          qrun: echo ${{ steps.docker_build.outputs.digest }}
+
+    deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: testing
+    steps:
+      - name: Deploy to Ubuntu VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            cd ~/app/src
+            git pull origin main
+            docker compose -f docker-compose-prod.yml pull
+            docker compose -f docker-compose-prod.yml up -d 
