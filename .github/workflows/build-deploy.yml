@@ -89,7 +89,7 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-    deploy:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     environment:
@@ -105,4 +105,4 @@ jobs:
             cd ~/app/src
             git pull origin main
             docker compose -f docker-compose-prod.yml pull
-            docker compose -f docker-compose-prod.yml up -d 
+            docker compose -f docker-compose-prod.yml up -d
