@@ -97,10 +97,20 @@ jobs:
     steps:
       - name: Deploy to Ubuntu VM
         uses: appleboy/ssh-action@v1.0.0
+        env:
+          DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          ALGORITHM: ${{ secrets.ALGORITHM }}
+          ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
+          envs: DATABASE_HOSTNAME,DATABASE_PORT,DATABASE_USERNAME,DATABASE_PASSWORD,DATABASE_NAME,SECRET_KEY,ALGORITHM,ACCESS_TOKEN_EXPIRE_MINUTES
           script: |
             cd ~/app/src
             git pull origin main
